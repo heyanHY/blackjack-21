@@ -1,0 +1,594 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #2e7d32;
+    color: white;
+    min-height: 100vh;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.page.active {
+    display: block;
+}
+
+/* 通用样式 */
+.btn {
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn:disabled {
+    background-color: #9e9e9e !important;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ff9800;
+    color: white;
+}
+
+.btn-info {
+    background-color: #2196f3;
+    color: white;
+}
+
+.btn-default {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.card {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-red { color: #f44336; }
+.text-yellow { color: #ffeb3b; }
+.text-green { color: #4caf50; }
+.text-orange { color: #ff9800; }
+
+/* 登录页面 */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    text-align: center;
+}
+
+.logo {
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffeb3b;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    margin-bottom: 60px;
+}
+
+.login-form input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    padding: 0 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    background-color: rgba(255,255,255,0.9);
+    color: #333;
+}
+
+.rules h3 {
+    color: #ffeb3b;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.rules p {
+    line-height: 1.8;
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+/* 大厅页面 */
+.hall-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hall-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.hall-header h2 {
+    font-size: 32px;
+    color: #ffeb3b;
+}
+
+.user-info {
+    font-size: 18px;
+}
+
+.user-info span {
+    margin-left: 20px;
+}
+
+.hall-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.join-room {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.join-room input {
+    width: 150px;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    padding: 0 15px;
+    font-size: 16px;
+    background-color: rgba(255,255,255,0.9);
+    color: #333;
+}
+
+.room-list h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #4caf50;
+}
+
+.empty-room {
+    text-align: center;
+    padding: 60px 0;
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
+}
+
+/* 房间页面 */
+.room-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.room-info h3 {
+    font-size: 28px;
+    color: #ffeb3b;
+    margin-bottom: 5px;
+}
+
+.host-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.host-info h3 {
+    color: #ff9800;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.no-host {
+    color: rgba(255,255,255,0.7);
+}
+
+.players-list h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #4caf50;
+}
+
+.player-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255,255,255,0.1);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.player-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ff9800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.player-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.player-balance {
+    font-size: 14px;
+    color: #ffeb3b;
+}
+
+.player-status {
+    font-size: 14px;
+}
+
+.status-ready { color: #4caf50; }
+.status-not-ready { color: #9e9e9e; }
+
+.room-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+/* 游戏页面 */
+.game-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.game-info span {
+    margin-right: 30px;
+    font-size: 18px;
+}
+
+.user-balance-info {
+    font-size: 18px;
+    color: #ffeb3b;
+}
+
+.dealer-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.dealer-section h3 {
+    font-size: 24px;
+    color: #ff9800;
+    margin-bottom: 20px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.card-item {
+    width: 100px;
+    height: 140px;
+    background-color: white;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.card-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.card-rank {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-rank.top {
+    top: 8px;
+    left: 8px;
+}
+
+.card-rank.bottom {
+    bottom: 8px;
+    right: 8px;
+    transform: rotate(180deg);
+}
+
+.card-suit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.card-back {
+    background-color: #1565c0;
+}
+
+.card-back-pattern {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        #1565c0,
+        #1565c0 10px,
+        #bbdefb 10px,
+        #bbdefb 20px
+    );
+}
+
+.card-value {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffeb3b;
+}
+
+.divider {
+    height: 2px;
+    background-color: rgba(255,255,255,0.2);
+    margin: 30px 0;
+}
+
+.players-section {
+    margin-bottom: 40px;
+}
+
+.game-player-item {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.game-player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.game-player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.game-player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2196f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.game-player-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.game-player-bet {
+    font-size: 14px;
+    color: #ffeb3b;
+    margin-left: 10px;
+}
+
+.game-player-status {
+    font-size: 14px;
+}
+
+.game-player-cards {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.game-player-cards .card-item {
+    width: 70px;
+    height: 98px;
+}
+
+.game-player-cards .card-rank {
+    font-size: 14px;
+}
+
+.game-player-cards .card-suit {
+    font-size: 28px;
+}
+
+.action-section {
+    text-align: center;
+}
+
+.bet-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.bet-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.bet-btn {
+    width: 100px;
+    height: 50px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bet-btn:hover, .bet-btn.active {
+    background-color: #388e3c;
+    transform: translateY(-2px);
+}
+
+.bet-info {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #ffeb3b;
+}
+
+.game-actions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.result-text {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.waiting-tip {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    padding: 40px 0;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .page {
+        padding: 15px;
+    }
+    
+    .logo {
+        font-size: 36px;
+        margin-bottom: 40px;
+    }
+    
+    .hall-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .join-room {
+        justify-content: center;
+    }
+    
+    .room-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .card-item {
+        width: 70px;
+        height: 98px;
+    }
+    
+    .card-rank {
+        font-size: 14px;
+    }
+    
+    .card-suit {
+        font-size: 28px;
+    }
+    
+    .bet-btn {
+        width: 80px;
+        height: 40px;
+        font-size: 16px;
+    }
+}

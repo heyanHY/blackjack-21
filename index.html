@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 21点多人棋牌</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录页面 -->
+        <div id="login-page" class="page active">
+            <div class="login-container">
+                <h1 class="logo">🎲 21点棋牌</h1>
+                <div class="login-form">
+                    <input type="text" id="nickname" placeholder="请输入你的昵称" maxlength="10">
+                    <button id="login-btn" class="btn btn-primary">进入游戏</button>
+                </div>
+                <div class="rules card">
+                    <h3>游戏规则</h3>
+                    <p>• 4副牌，支持最多6人同时游戏</p>
+                    <p>• 初始每人10000积分，最低下注100</p>
+                    <p>• 玩家可申请坐庄，轮流坐庄</p>
+                    <p>• 21点最大，超过21点爆牌输</p>
+                    <p>• 庄家小于17点必须要牌</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大厅页面 -->
+        <div id="hall-page" class="page">
+            <div class="hall-container">
+                <div class="hall-header">
+                    <h2>游戏大厅</h2>
+                    <div class="user-info">
+                        <span id="user-nickname"></span>
+                        <span>积分: <span id="user-balance">10000</span></span>
+                    </div>
+                </div>
+                
+                <div class="hall-actions">
+                    <button id="create-room-btn" class="btn btn-primary">创建房间</button>
+                    <div class="join-room">
+                        <input type="text" id="room-id-input" placeholder="输入6位房间号" maxlength="6">
+                        <button id="join-room-btn" class="btn btn-warning">加入房间</button>
+                    </div>
+                </div>
+
+                <div class="room-list">
+                    <h3>公开房间</h3>
+                    <div id="room-list-content">
+                        <div class="empty-room">暂无公开房间，创建一个吧！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 房间页面 -->
+        <div id="room-page" class="page">
+            <div class="room-container">
+                <div class="room-header">
+                    <div class="room-info">
+                        <h3>房间号: <span id="current-room-id"></span></h3>
+                        <span id="room-player-count">玩家: 1/6</span>
+                    </div>
+                    <button id="leave-room-btn" class="btn btn-default">离开房间</button>
+                </div>
+
+                <div class="host-info card">
+                    <h3>当前庄家</h3>
+                    <div id="current-host" class="no-host">
+                        暂无庄家，<button id="apply-host-btn" class="btn btn-small btn-warning">申请坐庄</button>
+                    </div>
+                </div>
+
+                <div class="players-list">
+                    <h3>玩家列表</h3>
+                    <div id="room-players-list"></div>
+                </div>
+
+                <div class="room-actions">
+                    <button id="ready-btn" class="btn btn-primary">准备游戏</button>
+                    <button id="start-game-btn" class="btn btn-danger" style="display: none;">开始游戏</button>
+                    <button id="copy-room-id-btn" class="btn btn-info">复制房间号</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 游戏页面 -->
+        <div id="game-page" class="page">
+            <div class="game-container">
+                <!-- 顶部信息 -->
+                <div class="game-header">
+                    <div class="game-info">
+                        <span>房间号: <span id="game-room-id"></span></span>
+                        <span>庄家: <span id="game-dealer-name"></span></span>
+                    </div>
+                    <div class="user-balance-info">
+                        我的积分: <span id="game-user-balance">10000</span>
+                    </div>
+                </div>
+
+                <!-- 庄家区域 -->
+                <div class="dealer-section">
+                    <h3>庄家</h3>
+                    <div id="dealer-cards" class="cards-container"></div>
+                    <div id="dealer-value" class="card-value" style="display: none;">点数: 0</div>
+                </div>
+
+                <!-- 分隔线 -->
+                <div class="divider"></div>
+
+                <!-- 玩家区域 -->
+                <div id="players-section" class="players-section"></div>
+
+                <!-- 操作区域 -->
+                <div class="action-section">
+                    <!-- 下注区域 -->
+                    <div id="bet-section" class="bet-section">
+                        <h3>请选择下注金额</h3>
+                        <div class="bet-buttons">
+                            <button class="bet-btn" data-value="100">100</button>
+                            <button class="bet-btn" data-value="200">200</button>
+                            <button class="bet-btn" data-value="500">500</button>
+                            <button class="bet-btn" data-value="1000">1000</button>
+                            <button class="bet-btn" data-value="2000">2000</button>
+                            <button class="bet-btn" data-value="5000">5000</button>
+                        </div>
+                        <div class="bet-info">已选下注: <span id="selected-bet">0</span></div>
+                        <button id="confirm-bet-btn" class="btn btn-primary" disabled>确认下注</button>
+                    </div>
+
+                    <!-- 游戏操作区域 -->
+                    <div id="game-actions" class="game-actions" style="display: none;">
+                        <button id="hit-btn" class="btn btn-primary">要牌</button>
+                        <button id="stand-btn" class="btn btn-warning">停牌</button>
+                    </div>
+
+                    <!-- 结果区域 -->
+                    <div id="result-section" class="result-section" style="display: none;">
+                        <div id="result-text" class="result-text"></div>
+                        <div class="result-actions">
+                            <button id="next-round-btn" class="btn btn-primary">下一局</button>
+                            <button id="back-to-room-btn" class="btn btn-default">返回房间</button>
+                        </div>
+                    </div>
+
+                    <!-- 等待提示 -->
+                    <div id="waiting-tip" class="waiting-tip" style="display: none;">
+                        等待其他玩家操作...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

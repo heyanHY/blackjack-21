@@ -1,0 +1,22 @@
+{
+  "name": "blackjack-multiplayer",
+  "version": "1.0.0",
+  "description": "多人联网21点网页游戏",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "keywords": [
+    "blackjack",
+    "21点",
+    "multiplayer",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT"
+}
