@@ -874,7 +874,9 @@ function setupSocketListeners() {
 window.addEventListener('DOMContentLoaded', () => {
     // 连接WebSocket后端
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const socket = io(`${protocol}//${window.location.host}`)
+    const socket = io(`${protocol}//${window.location.host}`, {
+        transports: ['polling', 'websocket']
+    })
     gameState.socket = socket
     
     // 设置Socket事件监听

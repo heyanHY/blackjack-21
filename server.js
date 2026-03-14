@@ -12,7 +12,8 @@ const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }
+    },
+    transports: ['polling', 'websocket']
 })
 
 // 静态文件服务
