@@ -722,12 +722,163 @@ document.getElementById('back-to-room-btn')?.addEventListener('click', () => {
     showPage('room')
 })
 
+// 登录
+document.getElementById('login-btn').addEventListener('click', () => {
+    const nickname = document.getElementById('nickname').value.trim()
+    if (!nickname) {
+        alert('请输入昵称')
+        return
+    }
+    
+    // 生成唯一用户ID
+    const userId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
+    // 随机头像颜色
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#F4A460', '#98FB98']
+    const avatarColor = colors[Math.floor(Math.random() * colors.length)]
+    
+    gameState.currentUser = {
+        id: userId,
+        nickname: nickname,
+        balance: 10000,
+        avatarColor: avatarColor
+    }
+    
+    document.getElementById('user-nickname').textContent = nickname
+    document.getElementById('user-balance').textContent = '10000'
+    showPage('hall')
+})
+
+// 创建房间
+document.getElementById('create-room-btn').addEventListener('click', () => {
+    if (!gameState.socket) {
+        alert('正在连接服务器，请稍后再试')
+        return
+    }
+    gameState.socket.emit('createRoom', gameState.currentUser)
+})
+
+// 加入房间
+document.getElementById('join-room-btn').addEventListener('click', () => {
+    const roomId = document.getElementById('room-id-input').value.trim()
+    if (!roomId || roomId.length !== 6) {
+        alert('请输入6位房间号')
+        return
+    }
+    if (!gameState.socket) {
+        alert('正在连接服务器，请稍后再试')
+        return
+    }
+    gameState.socket.emit('joinRoom', roomId, gameState.currentUser)
+})
+
+// 准备/取消准备
+document.getElementById('ready-btn').addEventListener('click', () => {
+    if (!gameState.currentRoom || !gameState.socket) return
+    
+    gameState.isReady = !gameState.isReady
+    document.getElementById('ready-btn').textContent = gameState.isReady ? '取消准备' : '准备游戏'
+    gameState.socket.emit('toggleReady', gameState.currentRoom.id, gameState.currentUser.id)
+})
+
+// 申请坐庄
+document.getElementById('apply-host-btn').addEventListener('click', () => {
+    if (!gameState.currentRoom || !gameState.socket) return
+    gameState.socket.emit('applyHost', gameState.currentRoom.id, gameState.currentUser)
+})
+
+// 开始游戏
+document.getElementById('start-game-btn').addEventListener('click', () => {
+    if (!gameState.currentRoom || !gameState.socket) return
+    gameState.socket.emit('startGame', gameState.currentRoom.id)
+})
+
+// 离开房间
+document.getElementById('leave-room-btn').addEventListener('click', () => {
+    if (!gameState.currentRoom || !gameState.socket) return
+    gameState.socket.emit('leaveRoom', gameState.currentRoom.id, gameState.currentUser.id)
+    gameState.currentRoom = null
+    gameState.isHost = false
+    gameState.isReady = false
+    showPage('hall')
+})
+
+// 复制房间号
+document.getElementById('copy-room-id-btn').addEventListener('click', () => {
+    if (!gameState.currentRoom) return
+    navigator.clipboard.writeText(gameState.currentRoom.id).then(() => {
+        alert('房间号已复制到剪贴板')
+    })
+})
+
+// Socket事件监听
+function setupSocketListeners() {
+    const socket = gameState.socket
+    
+    // 房间创建成功
+    socket.on('roomCreated', (room) => {
+        gameState.currentRoom = room
+        gameState.isHost = true
+        gameState.isReady = true
+        document.getElementById('current-room-id').textContent = room.id
+        document.getElementById('game-room-id').textContent = room.id
+        updateRoomPlayers()
+        updateHostInfo()
+        showPage('room')
+    })
+    
+    // 加入房间成功
+    socket.on('roomJoined', (room) => {
+        gameState.currentRoom = room
+        gameState.isHost = room.host.id === gameState.currentUser.id
+        document.getElementById('current-room-id').textContent = room.id
+        document.getElementById('game-room-id').textContent = room.id
+        updateRoomPlayers()
+        updateHostInfo()
+        showPage('room')
+    })
+    
+    // 房间更新
+    socket.on('roomUpdated', (room) => {
+        gameState.currentRoom = room
+        gameState.isHost = room.host && room.host.id === gameState.currentUser.id
+        updateRoomPlayers()
+        updateHostInfo()
+    })
+    
+    // 游戏开始
+    socket.on('gameStarted', (room) => {
+        gameState.currentRoom = room
+        showPage('game')
+        renderGameState()
+    })
+    
+    // 游戏更新
+    socket.on('gameUpdated', (room) => {
+        gameState.currentRoom = room
+        renderGameState()
+    })
+    
+    // 游戏结束
+    socket.on('gameEnded', (room) => {
+        gameState.currentRoom = room
+        calculateResults()
+    })
+    
+    // 错误提示
+    socket.on('error', (message) => {
+        alert(message)
+    })
+}
+
 // 初始化
 window.addEventListener('DOMContentLoaded', () => {
     // 连接WebSocket后端
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const socket = io(`${protocol}//${window.location.host}`)
     gameState.socket = socket
+    
+    // 设置Socket事件监听
+    setupSocketListeners()
     
     showPage('login')
 })
