@@ -724,6 +724,11 @@ document.getElementById('back-to-room-btn')?.addEventListener('click', () => {
 
 // 初始化
 window.addEventListener('DOMContentLoaded', () => {
+    // 连接WebSocket后端
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const socket = io(`${protocol}//${window.location.host}`)
+    gameState.socket = socket
+    
     showPage('login')
 })
 
