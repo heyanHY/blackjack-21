@@ -462,8 +462,13 @@ function calculateResults(room) {
     io.to(room.id).emit('gameFinished', room)
 }
 
-const PORT = process.env.PORT || 3000
-server.listen(PORT, () => {
-    console.log(`21点游戏服务器运行在 http://localhost:${PORT}`)
-    console.log('请在浏览器中打开上述地址开始游戏')
-})
+// Vercel 部署不需要监听端口，导出 app 即可
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000
+    server.listen(PORT, () => {
+        console.log(`21点游戏服务器运行在 http://localhost:${PORT}`)
+        console.log('请在浏览器中打开上述地址开始游戏')
+    })
+}
+
+module.exports = app
